@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "es6",
+    "outDir": "./lib",
+    "declaration": true,
+    "moduleResolution": "node",
+    "declarationDir": "./ref"
+  },
+  "filesGlob": [
+    "./src/**/*.ts"
+  ],
+  "files": [
+    "./src/Animation/Animation.ts",
+    "./src/Animation/AnimationClip.ts",
+    "./src/Animation/AnimationFactory.ts",
+    "./src/Animation/AnimationParser.ts",
+    "./src/Animation/IAnimationClipRecipe.ts",
+    "./src/Animation/IAnimationRecipe.ts",
+    "./src/Components/AnimationConponent.ts",
+    "./src/Components/AnimationImporterComponent.ts",
+    "./src/Components/SetAnimationFactoryComponent.ts",
+    "./src/index.ts",
+    "./src/main.ts",
+    "./src/Util/TimelineCalculator.ts"
+  ],
+  "exclude": [],
+  "atom": {
+    "rewriteTsconfig": true
+  }
+}
