@@ -1,5 +1,5 @@
 export default class TimelineCalculator {
-    public static calc(time: number, timelines: Array<Object>): number[] | number {
+    public static calc(time: number, timelines: Array<Object>): number[] {
         let result = [];
         for (let i = 0; i < timelines.length; i++) {
             const r = this._calc(time, timelines[i]);
@@ -9,11 +9,7 @@ export default class TimelineCalculator {
                 result.push(r);
             }
         }
-        if (result.length === 1) {
-            return result[0];
-        } else {
-            return result;
-        }
+        return result;
     }
     private static _decideTimelinePosition(time: number, times: number[]): number {
         let left = 0;
@@ -42,6 +38,12 @@ export default class TimelineCalculator {
             return timeline["values"][timelinePosition];
         }
         //TODO effectがLINERでない場合の処理
+        if (timeline["effects"] === void 0) {
+            timeline["effects"] = [];
+            for (let i = 0; i < timeline["times"].length - 1; i++) {
+                timeline["effects"].push("LINER");
+            }
+        }
         if (timeline["effects"][timelinePosition] === "LINER") {
             const y1 = timeline["values"][timelinePosition];
             const y2 = timeline["values"][timelinePosition + 1];
@@ -50,5 +52,16 @@ export default class TimelineCalculator {
             return (y2 - y1) * (time - x1) / (x2 - x1) + y1;
         }
         return null;
+    }
+    public static updateValue(value: number[], updateValue: number[]): number[] | number {
+        let result = [];
+        for (let i = 0; i < value.length; i++) {
+            result[i] = i < updateValue.length ? updateValue[i] : value[i];
+        }
+        if (result.length === 1) {
+            return result[0];
+        } else {
+            return result;
+        }
     }
 }

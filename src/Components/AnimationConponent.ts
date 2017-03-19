@@ -49,19 +49,18 @@ export default class AnimationComponent extends Component {
         }
     }
     public $update() {
-        if (this.ready) {
-          console.log(this.Time.getAttribute("time"))
-            this.animation.getClip(this.clipName).step(this.node, this.Time.getAttribute("time"));
+
+        if (this.ready && this.auto) {
+            const length = this.animation.getClip(this.clipName).getLength();
+            const time = this.loop ? this.Time.getAttribute("time") % length : this.Time.getAttribute("time");
+            this.animation.getClip(this.clipName).step(this.node, time);
         } else {
-          //TODO ロード未完了の際の例外処理
+            //TODO ロード未完了の際の例外処理
         }
     }
 
     private async _registerAttributes(): Promise<void> {
         this.animation = await this.animationPromise;
-        console.log(this.animation);
         this.ready = true;
-        this.animation.auto = this.auto;
-        this.animation.loop = this.loop;
     }
 }
