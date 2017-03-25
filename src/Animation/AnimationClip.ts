@@ -8,15 +8,23 @@ export default class AnimationClip {
     }
     public step(node: GomlNode, time: number): void {
         for (var key in this.clip) {
-            const query = this.clip[key]["query"];
-            const target = this.clip[key]["target"].split("|");
+            const query:string = this.clip[key]["query"];
+            const attribute = this.clip[key]["attribute"];
+            const component = this.clip[key]["component"];
             const timelines = this.clip[key]["timelines"];
-            if (query === "@") {
+            const lead = query.substr(0, 1);
+            if (lead === "@") {
                 const result = TimelineCalculator.calc(time, timelines);
-                const value = AttributeParser.parse(node.getAttributeRaw(target[1]).Value);
-                node.setAttribute(target[1], TimelineCalculator.updateValue(value, result));
-            } else {
-                //TODO queryが@でない場合の処理
+                const value = AttributeParser.parse(node.getAttributeRaw(attribute).Value);
+                node.setAttribute(attribute, TimelineCalculator.updateValue(value, result));
+            } else{
+              const _nodes = node.element.querySelectorAll(query);
+              for (let i = 0; i < _nodes.length; i++) {
+                  const gomlNode = GomlNode.fromElement(_nodes.item(i));
+                  const result = TimelineCalculator.calc(time, timelines);
+                  const value = AttributeParser.parse(gomlNode.getAttributeRaw(attribute).Value);
+                  gomlNode.setAttribute(attribute, TimelineCalculator.updateValue(value, result));
+              }
             }
         }
     }
