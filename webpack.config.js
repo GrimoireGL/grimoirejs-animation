@@ -12,7 +12,7 @@ const getBuildTask = (fileName, plugins) => {
     entry: path.resolve(__dirname, "src/index.ts"),
     output: {
       path: __dirname,
-      filename: "/register/" + fileName,
+      filename: "./register/" + fileName,
       libraryTarget: "umd"
     },
     module: {
@@ -23,7 +23,7 @@ const getBuildTask = (fileName, plugins) => {
       }]
     },
     resolve: {
-      extensions: ['', '.ts', '.js']
+      extensions: ['.ts', '.js']
     },
     plugins: [
       new shell({
