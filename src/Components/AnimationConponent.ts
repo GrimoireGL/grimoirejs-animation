@@ -37,7 +37,6 @@ export default class AnimationComponent extends Component {
     private clipName: string;
     public $mount(): void {
         this.__bindAttributes();
-        debugger;
         const clip = this.getAttribute("clip").split("#");
         this.animationName = clip[0];
         this.clipName = clip[1];

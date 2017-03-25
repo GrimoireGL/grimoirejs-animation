@@ -1,4 +1,4 @@
-import IAnimationRecipe from "./IAnimationRecipe";
+import IAnimationRecipe from "./Schema/IAnimationRecipe";
 import HashCalculator from "grimoirejs-fundamental/ref/Util/HashCalculator";
 export default class AnimationParser {
     private static _parsedCache: { [key: number]: IAnimationRecipe } = {};
