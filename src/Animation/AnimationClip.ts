@@ -1,30 +1,27 @@
 import IAnimationClipRecipe from "./IAnimationClipRecipe";
 import GomlNode from "grimoirejs/ref/Node/GomlNode";
 import TimelineCalculator from "../Util/TimelineCalculator";
-import AttributeParser from "../Util/AttributeParser";
 export default class AnimationClip {
     constructor(private clip: IAnimationClipRecipe) {
 
     }
     public step(node: GomlNode, time: number): void {
         for (var key in this.clip) {
-            const query:string = this.clip[key]["query"];
-            const attribute = this.clip[key]["attribute"];
-            const component = this.clip[key]["component"];
-            const timelines = this.clip[key]["timelines"];
+            const query: string = this.clip[key]["query"];
+            const attribute: string = this.clip[key]["attribute"];
+            const component: string = this.clip[key]["component"];
+            const timelines: Object[] = this.clip[key]["timelines"];
             const lead = query.substr(0, 1);
             if (lead === "@") {
                 const result = TimelineCalculator.calc(time, timelines);
-                const value = AttributeParser.parse(node.getAttributeRaw(attribute).Value);
-                node.setAttribute(attribute, TimelineCalculator.updateValue(value, result));
-            } else{
-              const _nodes = node.element.querySelectorAll(query);
-              for (let i = 0; i < _nodes.length; i++) {
-                  const gomlNode = GomlNode.fromElement(_nodes.item(i));
-                  const result = TimelineCalculator.calc(time, timelines);
-                  const value = AttributeParser.parse(gomlNode.getAttributeRaw(attribute).Value);
-                  gomlNode.setAttribute(attribute, TimelineCalculator.updateValue(value, result));
-              }
+                node.setAttribute(attribute, result);
+            } else {
+                const _nodes = node.element.querySelectorAll(query);
+                for (let i = 0; i < _nodes.length; i++) {
+                    const gomlNode = GomlNode.fromElement(_nodes.item(i));
+                    const result = TimelineCalculator.calc(time, timelines);
+                    gomlNode.setAttribute(attribute, result);
+                }
             }
         }
     }

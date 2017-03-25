@@ -53,15 +53,5 @@ export default class TimelineCalculator {
         }
         return null;
     }
-    public static updateValue(value: number[], updateValue: number[]): number[] | number {
-        let result = [];
-        for (let i = 0; i < value.length; i++) {
-            result[i] = i < updateValue.length ? updateValue[i] : value[i];
-        }
-        if (result.length === 1) {
-            return result[0];
-        } else {
-            return result;
-        }
-    }
+
 }

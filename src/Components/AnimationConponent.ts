@@ -6,6 +6,10 @@ import IAttributeDeclaration from "grimoirejs/ref/Node/IAttributeDeclaration";
 import TimeComponent from "grimoirejs-fundamental/ref/Components/TimeComponent";
 export default class AnimationComponent extends Component {
     public static attributes: { [key: string]: IAttributeDeclaration } = {
+        typeName: {
+            converter: "String",
+            default: null
+        },
         clip: {
             converter: "String",
             default: null
@@ -33,16 +37,15 @@ export default class AnimationComponent extends Component {
     public loop: boolean;
     public auto: boolean;
     public Time: TimeComponent;
-    private animationName: string;
-    private clipName: string;
+    public typeName: string;
+    public clip: string;
+    private initTime: number;
     public $mount(): void {
         this.__bindAttributes();
-        const clip = this.getAttribute("clip").split("#");
-        this.animationName = clip[0];
-        this.clipName = clip[1];
+        this.initTime = this.time;
         this.Time = this.node.getComponentInAncestor("Time") as TimeComponent;
-        if (this.animationName && typeof this.animationName === "string") {
-            this.animationPromise = (this.companion.get("AnimationFactory") as AnimationFactory).instanciate(this.animationName);
+        if (this.typeName && typeof this.typeName === "string") {
+            this.animationPromise = (this.companion.get("AnimationFactory") as AnimationFactory).instanciate(this.typeName);
             this._registerAttributes();
         } else {
             throw new Error("Animation type name must be sppecified and string");
@@ -51,9 +54,10 @@ export default class AnimationComponent extends Component {
     public $update() {
 
         if (this.ready && this.auto) {
-            const length = this.animation.getClip(this.clipName).getLength();
-            const time = this.loop ? this.Time.getAttribute("time") % length : this.Time.getAttribute("time");
-            this.animation.getClip(this.clipName).step(this.node, time);
+            const length = this.animation.getClip(this.clip).getLength();
+            this.time = this.Time.getAttribute("time") + this.initTime;
+            const _time = this.loop ? this.time % length : this.time;
+            this.animation.getClip(this.clip).step(this.node, _time);
         } else {
             //TODO ロード未完了の際の例外処理
         }
@@ -62,5 +66,8 @@ export default class AnimationComponent extends Component {
     private async _registerAttributes(): Promise<void> {
         this.animation = await this.animationPromise;
         this.ready = true;
+    }
+    public step(time: number): void {
+        this.animation.getClip(this.clip).step(this.node, time);
     }
 }
