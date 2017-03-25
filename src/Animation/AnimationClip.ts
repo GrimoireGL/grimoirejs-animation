@@ -1,7 +1,6 @@
 import IAnimationClipRecipe from "./Schema/IAnimationClipRecipe";
 import GomlNode from "grimoirejs/ref/Node/GomlNode";
 import TimelineCalculator from "../Util/TimelineCalculator";
-import AttributeParser from "../Util/AttributeParser";
 export default class AnimationClip {
     constructor(private _clip: IAnimationClipRecipe) {
 
@@ -16,16 +15,14 @@ export default class AnimationClip {
             const lead = query.substr(0, 1);
             if (lead === "@") {
                 const result = TimelineCalculator.calc(time, timelines);
-                const value = AttributeParser.parse(node.getAttributeRaw(attribute).Value);
-                node.setAttribute(attribute, TimelineCalculator.updateValue(value, result));
-            } else{
-              const _nodes = node.element.querySelectorAll(query);
-              for (let i = 0; i < _nodes.length; i++) {
-                  const gomlNode = GomlNode.fromElement(_nodes.item(i));
-                  const result = TimelineCalculator.calc(time, timelines);
-                  const value = AttributeParser.parse(gomlNode.getAttributeRaw(attribute).Value);
-                  gomlNode.setAttribute(attribute, TimelineCalculator.updateValue(value, result));
-              }
+                node.setAttribute(attribute, result);
+            } else {
+                const _nodes = node.element.querySelectorAll(query);
+                for (let i = 0; i < _nodes.length; i++) {
+                    const gomlNode = GomlNode.fromElement(_nodes.item(i));
+                    const result = TimelineCalculator.calc(time, timelines);
+                    gomlNode.setAttribute(attribute, result);
+                }
             }
         }
     }

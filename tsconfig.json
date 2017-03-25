@@ -25,7 +25,6 @@
     "./src/Components/SetAnimationFactoryComponent.ts",
     "./src/index.ts",
     "./src/main.ts",
-    "./src/Util/AttributeParser.ts",
     "./src/Util/TimelineCalculator.ts"
   ],
   "exclude": [],
