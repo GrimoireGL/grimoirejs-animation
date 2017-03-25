@@ -29,10 +29,10 @@ export default class AnimationClip {
 
     public getLength(): number {
         let length = 0;
-        for (var key in this._clip) {
-            const timelines = this._clip[key]["timelines"];
+        for (let elementIndex = 0; elementIndex < this._clip.length; elementIndex ++) {
+            const timelines = this._clip[elementIndex].timelines;
             for (let i = 0; i < timelines.length; i++) {
-                const times = timelines[i]["times"];
+                const times = timelines[i].times;
                 length = length <= times[times.length - 1] ? times[times.length - 1] : length;
             }
         }
