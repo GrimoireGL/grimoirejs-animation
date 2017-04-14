@@ -1,5 +1,6 @@
-interface IAnimationEffect{
-  type?:string;
-  [options:string]:any;
+import {EffectName} from "./IAnimationEffectName"
+interface IAnimationEffect {
+    type?: EffectName;
+    [options: string]: any;
 }
 export default IAnimationEffect;

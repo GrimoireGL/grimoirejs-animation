@@ -14,6 +14,7 @@ export default class AnimationImporterComponent extends Component {
         }
     };
     private typeName: string;
+    private src: string;
     public $awake(): void {
         this.__bindAttributes()
         this.getAttributeRaw("typeName").watch(v => {
@@ -22,13 +23,13 @@ export default class AnimationImporterComponent extends Component {
         this.getAttributeRaw("src").watch(v => {
             console.warn(`Changeing 'src' on AnimationImporter makes no sense. This change won't affect anything.`);
         });
-        if (!this.typeName || !this.getAttribute("src")) {
+        if (!this.typeName || !this.src) {
             throw new Error("type or src cannot be null in Animation importer");
         } else if (AnimationFactory.animationTypes.indexOf(this.typeName) >= 0) {
             throw new Error(`A Animation type '${this.typeName}' is already loaded.`);
         } else {
             AnimationFactory.animationTypes.push(this.typeName)
-            AnimationFactory.addAnimationFromURL(this.typeName, this.getAttribute("src"));
+            AnimationFactory.addAnimationFromURL(this.typeName, this.src);
         }
     }
 }

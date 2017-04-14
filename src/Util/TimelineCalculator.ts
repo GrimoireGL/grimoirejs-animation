@@ -1,5 +1,8 @@
+import IAnimationTimeline from "../Animation/Schema/IAnimationTimeline";
+import IAnimationEffect from "../Animation/Schema/IAnimationEffect";
+import {EffectName} from "../Animation/Schema/IAnimationEffectName"
 export default class TimelineCalculator {
-    public static calc(time: number, timelines: Array<Object>): number[] {
+    public static calc(time: number, timelines: Array<IAnimationTimeline>): number[] {
         let result = [];
         for (let i = 0; i < timelines.length; i++) {
             const r = this._calc(time, timelines[i]);
@@ -32,24 +35,26 @@ export default class TimelineCalculator {
         }
         return left;
     }
-    private static _calc(time: number, timeline: Object): number {
-        const timelinePosition = this._decideTimelinePosition(time, timeline["times"]);
-        if (timeline["values"].length - 1 === timelinePosition) {
-            return timeline["values"][timelinePosition];
+    private static _calc(time: number, timeline: IAnimationTimeline): number {
+        const timelinePosition = this._decideTimelinePosition(time, timeline.times);
+        if (timeline.values.length - 1 === timelinePosition) {
+            return timeline.values[timelinePosition];
         }
-        //TODO effectがLINERでない場合の処理
-        if (timeline["effects"] === void 0) {
-            timeline["effects"] = [];
-            for (let i = 0; i < timeline["times"].length - 1; i++) {
-                timeline["effects"].push("LINER");
+        //TODO effectがLINEARでない場合の処理
+        if (timeline.effects === void 0) {
+            timeline.effects = [];
+            for (let i = 0; i < timeline.times.length - 1; i++) {
+                timeline.effects.push({ type: EffectName.LINEAR });
             }
         }
-        if (timeline["effects"][timelinePosition] === "LINER") {
-            const y1 = timeline["values"][timelinePosition];
-            const y2 = timeline["values"][timelinePosition + 1];
-            const x1 = timeline["times"][timelinePosition]
-            const x2 = timeline["times"][timelinePosition + 1];
+        if (timeline.effects[timelinePosition].type === EffectName.LINEAR) {
+            const y1 = timeline.values[timelinePosition];
+            const y2 = timeline.values[timelinePosition + 1];
+            const x1 = timeline.times[timelinePosition]
+            const x2 = timeline.times[timelinePosition + 1];
             return (y2 - y1) * (time - x1) / (x2 - x1) + y1;
+        } else if (timeline.effects[timelinePosition].type === EffectName.LINEAR) {
+            return timeline.values[timelinePosition];
         }
         return null;
     }

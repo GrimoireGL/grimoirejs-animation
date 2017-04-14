@@ -25,9 +25,7 @@ export default class AnimationComponent extends Component {
     };
 
     public animationPromise: Promise<Animation>;
-
     public animation: Animation;
-
     public ready: boolean;
     public time: number;
     public loop: boolean;
@@ -55,21 +53,19 @@ export default class AnimationComponent extends Component {
         })
     }
     public $update() {
-        if (this.ready && this.auto) {
-            const length = this.animation.getClip(this.clipName).getLength();
-            this.time = this.Time.getAttribute("time") + this.initTime;
-            this.time = this.loop ? this.time % length : this.time;
-            this.animation.getClip(this.clipName).step(this.node, this.time);
-        } else {
-            console.warn('Animation(' + this.animationName + ')loading is not completed!')
-        }
+        if (this.ready && this.auto) this._update();
     }
-
     private async _registerAttributes(): Promise<void> {
         this.animation = await this.animationPromise;
         this.ready = true;
     }
     public step(time: number): void {
         this.animation.getClip(this.clip).step(this.node, time);
+    }
+    private _update(): void {
+        const length = this.animation.getClip(this.clipName).getLength();
+        this.time = this.Time.getAttribute("time") + this.initTime;
+        this.time = this.loop ? this.time % length : this.time;
+        this.animation.getClip(this.clipName).step(this.node, this.time);
     }
 }
