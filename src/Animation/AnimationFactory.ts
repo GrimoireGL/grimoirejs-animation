@@ -11,15 +11,15 @@ export default class AnimationFactory {
             AnimationFactory.registerdHandlers[typeName].forEach((t) => t());
         }
     }
-    public static async addAnimation(typeName: string, source: string): Promise<void> {
-        const recipe = await AnimationParser.parse(source);
+    public static addAnimation(typeName: string, source: string): void {
+        const recipe = AnimationParser.parse(source);
         AnimationFactory.addAnimationType(typeName, () => {
             return new Animation(recipe);
         });
     }
     public static async addAnimationFromURL(typeName: string, url: string): Promise<void> {
         const source = await TextFileResolver.resolve(url);
-        await AnimationFactory.addAnimation(typeName, source);
+        AnimationFactory.addAnimation(typeName, source);
     }
     private static _onRegister(typeName: string, handler: () => void): void {
         if (AnimationFactory.registerdHandlers[typeName]) {

@@ -1,4 +1,4 @@
-import IAnimationRecipe from "./IAnimationRecipe";
+import IAnimationRecipe from "./Schema/IAnimationRecipe";
 import AnimationClip from "./AnimationClip";
 export default class Animation {
     public clips: Map<string, AnimationClip> = new Map<string, AnimationClip>();
