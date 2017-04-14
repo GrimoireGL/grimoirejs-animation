@@ -44,22 +44,24 @@ export default class AnimationComponent extends Component {
         this.animationName = this.clip.split("#")[0];
         this.Time = this.node.getComponentInAncestor("Time") as TimeComponent;
         if (this.animationName && typeof this.animationName === "string") {
-            this.animationPromise = (this.companion.get("AnimationFactory") as AnimationFactory).instanciate(this.animationName);
+            this.animationPromise = AnimationFactory.instanciate(this.animationName);
             this._registerAttributes();
         } else {
             throw new Error("Animation type name must be sppecified and string");
         }
+        this.getAttributeRaw('clip').watch((attr) => {
+            this.animationName = this.clip.split("#")[0];
+            this.clipName = this.clip.split("#")[1];
+        })
     }
     public $update() {
-
         if (this.ready && this.auto) {
             const length = this.animation.getClip(this.clipName).getLength();
             this.time = this.Time.getAttribute("time") + this.initTime;
-            const _time = this.loop ? this.time % length : this.time;
-            this.time = _time;
-            this.animation.getClip(this.clipName).step(this.node, _time);
+            this.time = this.loop ? this.time % length : this.time;
+            this.animation.getClip(this.clipName).step(this.node, this.time);
         } else {
-            //TODO ロード未完了の際の例外処理
+            console.warn('Animation(' + this.animationName + ')loading is not completed!')
         }
     }
 

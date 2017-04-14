@@ -22,7 +22,6 @@
     "./src/Animation/Schema/IAnimationTimeline.ts",
     "./src/Components/AnimationConponent.ts",
     "./src/Components/AnimationImporterComponent.ts",
-    "./src/Components/SetAnimationFactoryComponent.ts",
     "./src/index.ts",
     "./src/main.ts",
     "./src/Util/TimelineCalculator.ts"

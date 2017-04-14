@@ -2,7 +2,6 @@ import gr from "grimoirejs";
 import AnimationImporterComponent from "./Components/AnimationImporterComponent";
 import AnimationComponent from "./Components/AnimationConponent";
 import AnimationFactory from "./Animation/AnimationFactory";
-import SetAnimationFactoryComponent from "./Components/SetAnimationFactoryComponent";
 import Constants from "grimoirejs/ref/Base/Constants";
 export default () => {
     gr.register(async () => {
@@ -10,7 +9,5 @@ export default () => {
         gr.registerNode("import-animation", ["AnimationImporter"]);
         gr.registerComponent(_$ns("Animation"), AnimationComponent);
         gr.registerComponent(_$ns("AnimationImporter"), AnimationImporterComponent);
-        gr.registerComponent(_$ns("SetAnimationFactory"), SetAnimationFactoryComponent);
-        gr.overrideDeclaration("goml", ["SetAnimationFactory"]);
     });
 };

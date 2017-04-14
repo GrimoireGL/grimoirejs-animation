@@ -4,9 +4,10 @@ import Animation from "./Animation";
 export default class AnimationFactory {
     public static animationGenerators: { [key: string]: (() => Animation) } = {};
     public static registerdHandlers: { [key: string]: (() => void)[] } = {};
+    public static animationTypes: string[] = [];
 
     public static addAnimationType(typeName: string, animationGenerator: () => Animation): void {
-        AnimationFactory.animationGenerators[typeName] = animationGenerator;
+        this.animationGenerators[typeName] = animationGenerator;
         if (AnimationFactory.registerdHandlers[typeName]) {
             AnimationFactory.registerdHandlers[typeName].forEach((t) => t());
         }
@@ -28,14 +29,14 @@ export default class AnimationFactory {
             AnimationFactory.registerdHandlers[typeName] = [handler];
         }
     }
-    public async instanciate(typeName: string): Promise<Animation> {
+    public static async instanciate(typeName: string): Promise<Animation> {
         if (AnimationFactory.animationGenerators[typeName]) {
             return AnimationFactory.animationGenerators[typeName]();
         } else {
             return await this._waitForRegistered(typeName);
         }
     }
-    private _waitForRegistered(typeName: string): Promise<Animation> {
+    private static _waitForRegistered(typeName: string): Promise<Animation> {
         return new Promise<Animation>((resolve) => {
             AnimationFactory._onRegister(typeName, () => {
                 resolve(AnimationFactory.animationGenerators[typeName]());
