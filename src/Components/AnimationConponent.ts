@@ -74,10 +74,6 @@ export default class AnimationComponent extends Component {
     this.time = this.loop ? this.time % length : this.time;
     this.animation.getClip(this.clipName).step(this.node, this.time);
   }
-  public getClipElement(clipName: string, query?: string): IAnimationClipElement {
-    query = query === void 0 ? '@' : query;
-    return this.Animation.getClip(clipName).getElement(query)
-  }
   public getClip(clipName): AnimationClip {
     return this.Animation.getClip(clipName)
   }
