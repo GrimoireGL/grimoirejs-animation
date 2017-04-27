@@ -4,3 +4,4 @@ export namespace EffectName {
     export const DESCRETE: EffectName = "DESCRETE";
     export const BEZIER: EffectName = "BEZIER"
 }
+export default EffectName;

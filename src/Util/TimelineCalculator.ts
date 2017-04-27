@@ -55,6 +55,8 @@ export default class TimelineCalculator {
             return (y2 - y1) * (time - x1) / (x2 - x1) + y1;
         } else if (timeline.effects[timelinePosition].type === EffectName.LINEAR) {
             return timeline.values[timelinePosition];
+        } else if (timeline.effects[timelinePosition].type === EffectName.BEZIER) {
+          //TODO BEZIER
         }
         return null;
     }
