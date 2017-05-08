@@ -8,6 +8,6 @@ export default class Animation {
     }
   }
   public getClip(clipName: string): AnimationClip {
-    return this.clips.get(clipName);
+    return this.clips.get(clipName)
   }
 }

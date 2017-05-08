@@ -8,73 +8,74 @@ import IAnimationClipElement from "../Animation/Schema/IAnimationClipElement";
 import AnimationClip from "../Animation/AnimationClip"
 export default class AnimationComponent extends Component {
   public static attributes: { [key: string]: IAttributeDeclaration } = {
-    clip: {
+    animation: {
+      converter: "String",
+      default: null
+    }, clip: {
       converter: "String",
       default: null
     },
     auto: {
       converter: "Boolean",
-      default: false
+      default: true
     },
     loop: {
       converter: "Boolean",
-      default: false
+      default: true
     },
     time: {
       converter: "Number",
       default: 0
     }
   };
-
-  public animationPromise: Promise<Animation>;
-  public animation: Animation;
-  public ready: boolean;
-  public time: number;
-  public loop: boolean;
-  public auto: boolean;
-  public Time: TimeComponent;
+  public animation: string;
   public clip: string;
-  private initTime: number;
-  private clipName: string;
-  private animationName: string;
+  public auto: boolean;
+  public loop: boolean;
+  public time: number;
+  private _animation: Animation;
+  private _animationPromise: Promise<Animation>;
+  private _ready: boolean;
+  private _Time: TimeComponent;
+  private _initTime: number;
   get Animation() {
-    return this.animation;
+    return this._animation;
+  }
+  set Animation(animation: Animation) {
+    this._animation = animation;
   }
   public $mount(): void {
     this.__bindAttributes();
-    this.initTime = this.time;
-    this.clipName = this.clip.split("#")[1];
-    this.animationName = this.clip.split("#")[0];
-    this.Time = this.node.getComponentInAncestor("Time") as TimeComponent;
-    if (this.animationName && typeof this.animationName === "string") {
-      this.animationPromise = AnimationFactory.instanciate(this.animationName);
+    this._initTime = this.time;
+    this._Time = this.node.getComponentInAncestor("Time") as TimeComponent;
+    if (this.animation === "dynamic") {
+      this._ready = true
+    } else if (this.animation && typeof this.animation === "string") {
+      this._animationPromise = AnimationFactory.instanciate(this.animation);
       this._registerAttributes();
     } else {
       throw new Error("Animation type name must be sppecified and string");
     }
-    this.getAttributeRaw('clip').watch((attr) => {
-      this.animationName = this.clip.split("#")[0];
-      this.clipName = this.clip.split("#")[1];
-    })
   }
   public $update() {
     //TODO use LoopManagerComponent
-    if (this.ready && this.auto) this._update();
+    if (this._ready && this.auto) this._update();
   }
   private async _registerAttributes(): Promise<void> {
-    this.animation = await this.animationPromise;
-    this.ready = true;
+    this._animation = await this._animationPromise;
+    console.log(this._animation)
+    this._ready = true;
   }
   public step(time: number): void {
-    this.animation.getClip(this.clip).step(this.node, time);
+    this._animation.getClip(this.clip).step(this.node, time);
   }
   private _update(): void {
-    const length = this.animation.getClip(this.clipName).getLength();
-    this.time = this.Time.getAttribute("time") + this.initTime;
+    const length = this._animation.getClip(this.clip).getLength();
+    this.time = this._Time.getAttribute("time") + this._initTime;
     this.time = this.loop ? this.time % length : this.time;
-    this.animation.getClip(this.clipName).step(this.node, this.time);
+    this._animation.getClip(this.clip).step(this.node, this.time);
   }
-  public getClip(clipName): AnimationClip {
+  public getClip(clipName: string): AnimationClip {
     return this.Animation.getClip(clipName)
   }
 }
