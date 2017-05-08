@@ -2,11 +2,16 @@
   "name": "grimoirejs-animation",
   "version": "1.0.0",
   "description": "The animation plugin of grimoire.js.",
-  "main": "index.js",
+  "main": "./ref/index.js",
+  "typings": "./ref/index.d.ts",
   "files": [
     "register",
     "ref",
     "src"
+  ],
+  "keywords": [
+    "grimoire",
+    "grimoirejs"
   ],
   "scripts": {
     "start": "webpack --watch --progress",
