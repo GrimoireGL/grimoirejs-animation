@@ -63,7 +63,6 @@ export default class AnimationComponent extends Component {
   }
   private async _registerAttributes(): Promise<void> {
     this._animation = await this._animationPromise;
-    console.log(this._animation)
     this._ready = true;
   }
   public step(time: number): void {
