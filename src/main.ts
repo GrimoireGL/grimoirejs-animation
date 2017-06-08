@@ -43,10 +43,9 @@ function animate(attributeName: string, value: number[], time: number) {
 
 export default () => {
   gr.register(async () => {
-    const _$ns = gr.ns(Constants.defaultNamespace);
     gr.registerNode("import-animation", ["AnimationImporter"]);
-    gr.registerComponent(_$ns("Animation"), AnimationComponent);
-    gr.registerComponent(_$ns("AnimationImporter"), AnimationImporterComponent);
+    gr.registerComponent("Animation", AnimationComponent);
+    gr.registerComponent("AnimationImporter", AnimationImporterComponent);
     gr.prototype.constructor.Interface.NodeInterface.prototype.animate = animate;
     (GomlNode.prototype as any).animate = animate;
   });
