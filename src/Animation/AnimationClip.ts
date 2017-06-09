@@ -1,11 +1,10 @@
-import IAnimationClipRecipe from "./Schema/IAnimationClipRecipe";
 import GomlNode from "grimoirejs/ref/Node/GomlNode";
 import TimelineCalculator from "../Util/TimelineCalculator";
 import AnimationClipElement from "../Animation/Schema/IAnimationClipElement"
 import IAnimationClipElement from "../Animation/Schema/IAnimationClipElement"
 export default class AnimationClip {
   private _animationClipElements: Map<string, IAnimationClipElement> = new Map<string, IAnimationClipElement>();
-  constructor(private _clip: IAnimationClipRecipe) {
+  constructor(private _clip: IAnimationClipElement[]) {
     for (let i = 0; i < _clip.length; i++) {
       this._animationClipElements.set(_clip[i].query, _clip[i])
     }

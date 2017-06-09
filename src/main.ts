@@ -6,7 +6,6 @@ import Constants from "grimoirejs/ref/Base/Constants";
 import NodeInterface from "grimoirejs/ref/Interface/NodeInterface";
 import GomlNode from "grimoirejs/ref/Node/GomlNode";
 import Animation from "./Animation/Animation";
-import IAnimationClipRecipe from "./Animation/Schema/IAnimationClipRecipe"
 import IAnimationRecipe from "./Animation/Schema/IAnimationRecipe";
 import Attribute from "grimoirejs/ref/Node/Attribute"
 

@@ -1,5 +1,5 @@
-import IAnimationClipRecipe from "./IAnimationClipRecipe";
+import IAnimationClipElement from "./IAnimationClipElement";
 interface IAnimationRecipe {
-  [clipName:string]: IAnimationClipRecipe;
+  [clipName:string]: IAnimationClipElement[];
 }
 export default IAnimationRecipe;
