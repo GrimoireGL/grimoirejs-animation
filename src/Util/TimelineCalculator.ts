@@ -41,23 +41,23 @@ export default class TimelineCalculator {
             return timeline.values[timelinePosition];
         }
         //TODO effectがLINEARでない場合の処理
-        if (timeline.effects === void 0) {
-            timeline.effects = [];
-            for (let i = 0; i < timeline.times.length - 1; i++) {
-                timeline.effects.push({ type: EffectName.LINEAR });
-            }
-        }
-        if (timeline.effects[timelinePosition].type === EffectName.LINEAR) {
-            const y1 = timeline.values[timelinePosition];
-            const y2 = timeline.values[timelinePosition + 1];
-            const x1 = timeline.times[timelinePosition]
-            const x2 = timeline.times[timelinePosition + 1];
-            return (y2 - y1) * (time - x1) / (x2 - x1) + y1;
-        } else if (timeline.effects[timelinePosition].type === EffectName.LINEAR) {
-            return timeline.values[timelinePosition];
-        } else if (timeline.effects[timelinePosition].type === EffectName.BEZIER) {
-          //TODO BEZIER
-        }
+        // if (timeline.effects === void 0) {
+        //     timeline.effects = [];
+        //     for (let i = 0; i < timeline.times.length - 1; i++) {
+        //         timeline.effects.push({ type: EffectName.LINEAR });
+        //     }
+        // }
+        // if (timeline.effects[timelinePosition].type === EffectName.LINEAR) {
+        //     const y1 = timeline.values[timelinePosition];
+        //     const y2 = timeline.values[timelinePosition + 1];
+        //     const x1 = timeline.times[timelinePosition]
+        //     const x2 = timeline.times[timelinePosition + 1];
+        //     return (y2 - y1) * (time - x1) / (x2 - x1) + y1;
+        // } else if (timeline.effects[timelinePosition].type === EffectName.LINEAR) {
+        //     return timeline.values[timelinePosition];
+        // } else if (timeline.effects[timelinePosition].type === EffectName.BEZIER) {
+        //   //TODO BEZIER
+        // }
         return null;
     }
 

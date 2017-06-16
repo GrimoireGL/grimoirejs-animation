@@ -14,10 +14,10 @@
     "grimoirejs"
   ],
   "scripts": {
-    "prepublish":"npm run build -- --env.prod",
+    "prepublish":"webpack --env.prod",
     "start": "webpack --watch --progress",
     "bundle": "webpack --progress --watch",
-    "build": "webpack --progress",
+    "build": "webpack --env.browser",
     "generate-expose": "cauldron generate-exposure --src ./src --dest ./src/index.ts --ts --main ./src/main.ts --dts ./ref",
     "generate-reference": "cauldron generate-reference --src ./src --dest ./src/index.ts --ts --main ./src/main.ts --dts ./ref"
   },

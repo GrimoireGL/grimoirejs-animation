@@ -1,13 +1,13 @@
 import IAnimationRecipe from "./Schema/IAnimationRecipe";
 import AnimationClip from "./AnimationClip";
 export default class Animation {
-  public clips: Map<string, AnimationClip> = new Map<string, AnimationClip>();
-  constructor(private animationRecipe: IAnimationRecipe) {
-    for (var clipName in animationRecipe) {
-      this.clips.set(clipName, new AnimationClip(animationRecipe[clipName]));
+  private clips: { [key: string]: AnimationClip } = {};
+  constructor(_clips: IAnimationRecipe) {
+    for (let key in _clips) {
+      this.clips[key] = new AnimationClip(_clips[key]);
     }
   }
   public getClip(clipName: string): AnimationClip {
-    return this.clips.get(clipName)
+    return this.clips[clipName];
   }
 }
