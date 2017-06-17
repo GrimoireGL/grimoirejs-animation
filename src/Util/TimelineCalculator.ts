@@ -6,6 +6,8 @@ import Attribute from "grimoirejs/ref/Node/Attribute";
 import Vector4 from "grimoirejs-math/ref/Vector4";
 import Vector3 from "grimoirejs-math/ref/Vector3";
 import Vector2 from "grimoirejs-math/ref/Vector2";
+import Color3 from "grimoirejs-math/ref/Color3";
+import Color4 from "grimoirejs-math/ref/Color4";
 import Quaternion from "grimoirejs-math/ref/Quaternion";
 
 export default class TimelineCalculator {
@@ -20,7 +22,7 @@ export default class TimelineCalculator {
       const v2 = attribute.converter.convert(element.values[timelinePosition + 1], attribute);
       if (element.defaultEffect === EffectName.LINEAR) {
         switch ((attribute.converter.name as NSIdentity).name) {
-          case "Number":
+          case "Number" || "Angle2D":
             return v1 + (v2 - v1) * t;
           case "Vector2":
             return Vector2.lerp(v1, v2, t);
@@ -30,6 +32,12 @@ export default class TimelineCalculator {
             return Vector4.lerp(v1, v2, t);
           case "Rotation3":
             return Quaternion.slerp(v1, v2, t);
+          case "Color3":
+            const v3 = Vector3.lerp(v1.toVector(), v2.toVector(), t);
+            return new Color3(v3.X, v3.Y, v3.Z);
+          case "Color4":
+            const v4 = Vector4.lerp(v1.toVector(), v2.toVector(), t);
+            return new Color4(v4.X, v4.Y, v4.Z, v4.W);
           default:
             throw new Error('Converter ' + attribute.converter.name + ' is not supported.');
         }
