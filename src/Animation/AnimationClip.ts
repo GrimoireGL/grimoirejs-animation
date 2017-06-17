@@ -1,55 +1,36 @@
 import GomlNode from "grimoirejs/ref/Node/GomlNode";
+import Component from "grimoirejs/ref/Node/Component";
 import TimelineCalculator from "../Util/TimelineCalculator";
-import AnimationClipElement from "../Animation/Schema/IAnimationClipElement"
 import IAnimationClipElement from "../Animation/Schema/IAnimationClipElement"
 export default class AnimationClip {
-  private _animationClipElements: Map<string, IAnimationClipElement> = new Map<string, IAnimationClipElement>();
-  constructor(private _clip: IAnimationClipElement[]) {
-    for (let i = 0; i < _clip.length; i++) {
-      this._animationClipElements.set(_clip[i].query, _clip[i])
+  private elements: { [key: string]: IAnimationClipElement } = {};
+  constructor(_element: IAnimationClipElement[]) {
+    for (let key in _element) {
+      this.elements[key] = _element[key];
     }
   }
-  get Elements(): Map<string, IAnimationClipElement> {
-    return this._animationClipElements;
+  get Elements() {
+    return this.elements;
   }
-
-  public step(node: GomlNode, time: number): void {
-    for (let elementIndex = 0; elementIndex < this._clip.length; elementIndex++) {
-      const clipRecipe = this._clip[elementIndex];
-      const query: string = clipRecipe.query;
-      const attribute = clipRecipe.attribute;
-      const component = clipRecipe.component;
-      const timelines = clipRecipe.timelines;
-      const lead = query.substr(0, 1);
-      if (lead === "@") {
-        const result = TimelineCalculator.calc(time, timelines);
-        node.setAttribute(attribute, result);
+  get Length() {
+    let len = 0;
+    for (let key in this.elements) {
+      const t = this.elements[key].timeline[this.elements[key].timeline.length - 1];
+      len = t > len ? t : len;
+    }
+    return len;
+  }
+  public step(rootNode: GomlNode, time: number): void {
+    for (let key in this.elements) {
+      const e = this.elements[key];
+      const attribute = (rootNode.getComponent(e.component) as Component).getAttributeRaw(e.attribute);
+      if (e.query === '@') {
+        (rootNode.getComponent(e.component) as Component).setAttribute(e.attribute, TimelineCalculator.calc(time, e, attribute));
       } else {
-        const _nodes = node.element.querySelectorAll(query);
-        for (let i = 0; i < _nodes.length; i++) {
-          const gomlNode = GomlNode.fromElement(_nodes.item(i));
-          const result = TimelineCalculator.calc(time, timelines);
-          gomlNode.setAttribute(attribute, result);
-        }
+        rootNode.element.querySelectorAll(e.query).forEach(childElement => {
+          (GomlNode.fromElement(childElement).getComponent(e.component) as Component).setAttribute(e.attribute, TimelineCalculator.calc(time, e, attribute));
+        });
       }
     }
-  }
-  public getElement(query: string): IAnimationClipElement {
-    return this.Elements.get(query)
-  }
-  public rootElement(): IAnimationClipElement {
-    return this.getElement('@');
-  }
-
-  public getLength(): number {
-    let length = 0;
-    for (let elementIndex = 0; elementIndex < this._clip.length; elementIndex++) {
-      const timelines = this._clip[elementIndex].timelines;
-      for (let i = 0; i < timelines.length; i++) {
-        const times = timelines[i].times;
-        length = length <= times[times.length - 1] ? times[times.length - 1] : length;
-      }
-    }
-    return length;
   }
 }

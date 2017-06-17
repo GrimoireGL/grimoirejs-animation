@@ -1,4 +1,6 @@
 import gr from "grimoirejs";
+import Timer from "grimoirejs-fundamental/ref/Util/Timer";
+import IRenderArgument from "grimoirejs-fundamental/ref/SceneRenderer/IRenderArgument";
 import AnimationFactory from "../Animation/AnimationFactory";
 import Animation from "../Animation/Animation";
 import Component from "grimoirejs/ref/Node/Component";
@@ -11,8 +13,9 @@ export default class AnimationComponent extends Component {
     animation: {
       converter: "String",
       default: null
-    }, clip: {
-      converter: "String",
+    },
+    clips: {
+      converter: "StringArray",
       default: null
     },
     auto: {
@@ -22,59 +25,43 @@ export default class AnimationComponent extends Component {
     loop: {
       converter: "Boolean",
       default: true
-    },
-    time: {
-      converter: "Number",
-      default: 0
     }
   };
   public animation: string;
-  public clip: string;
+  public clips: string[];
   public auto: boolean;
   public loop: boolean;
-  public time: number;
   private _animation: Animation;
   private _animationPromise: Promise<Animation>;
   private _ready: boolean;
-  private _Time: TimeComponent;
-  private _initTime: number;
   get Animation() {
     return this._animation;
   }
-  set Animation(animation: Animation) {
-    this._animation = animation;
-  }
   public $mount(): void {
     this.__bindAttributes();
-    this._initTime = this.time;
-    this._Time = this.node.getComponentInAncestor("Time") as TimeComponent;
-    if (this.animation === "dynamic") {
-      this._ready = true
-    } else if (this.animation && typeof this.animation === "string") {
+    if (this.animation && typeof this.animation === "string") {
       this._animationPromise = AnimationFactory.instanciate(this.animation);
       this._registerAttributes();
     } else {
       throw new Error("Animation type name must be sppecified and string");
     }
   }
-  public $update() {
-    //TODO use LoopManagerComponent
-    if (this._ready && this.auto) this._update();
+  public $update(args: IRenderArgument) {
+    if (this._ready && this.auto) this._update((args.timer as Timer));
   }
   private async _registerAttributes(): Promise<void> {
     this._animation = await this._animationPromise;
     this._ready = true;
   }
-  public step(time: number): void {
-    this._animation.getClip(this.clip).step(this.node, time);
-  }
-  private _update(): void {
-    const length = this._animation.getClip(this.clip).getLength();
-    this.time = this._Time.getAttribute("time") + this._initTime;
-    this.time = this.loop ? this.time % length : this.time;
-    this._animation.getClip(this.clip).step(this.node, this.time);
+  private _update(timer: Timer): void {
+    for (let key in this.clips) {
+      const length = this._animation.getClip(this.clips[key]).Length;
+      const t = this.loop ? timer.time % length : Math.max(timer.time, length);
+      if (t > length) return;
+      this._animation.getClip(this.clips[key]).step(this.node, t);
+    }
   }
   public getClip(clipName: string): AnimationClip {
-    return this.Animation.getClip(clipName)
+    return this._animation.getClip(clipName);
   }
 }
