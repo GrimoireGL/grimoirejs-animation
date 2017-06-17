@@ -8,6 +8,10 @@ export default class Animation {
     }
   }
   public getClip(clipName: string): AnimationClip {
-    return this.clips[clipName];
+    if (this.clips[clipName] === void 0) {
+      throw new Error("Animation type " + clipName + " is not exist.");
+    } else {
+      return this.clips[clipName];
+    }
   }
 }

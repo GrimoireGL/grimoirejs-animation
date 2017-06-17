@@ -1,10 +1,10 @@
-import IAnimationTimeline from  "./IAnimationTimeline";
 import IAnimationEffect from  "./IAnimationEffect";
 interface IAnimationClipElement {
   query: string;
   component: string;
   attribute: string;
-  timelines: IAnimationTimeline[];
+  timeline: number[];
+  values: any[];
   effects?: IAnimationEffect[];
   defaultEffect?: IAnimationEffect;
 }

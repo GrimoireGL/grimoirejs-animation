@@ -54,11 +54,10 @@ export default class AnimationComponent extends Component {
     this._ready = true;
   }
   private _update(timer: Timer): void {
-    //TODO timeに関する仕様
-    const length = 2000;
-    const t = this.loop ? timer.time % length : timer.time;
-    if (t > length) return;
     for (let key in this.clips) {
+      const length = this._animation.getClip(this.clips[key]).Length;
+      const t = this.loop ? timer.time % length : Math.max(timer.time, length);
+      if (t > length) return;
       this._animation.getClip(this.clips[key]).step(this.node, t);
     }
   }
