@@ -18,7 +18,6 @@
     "./src/Animation/Schema/IAnimationRecipe.ts",
     "./src/Animation/Schema/IAnimationClipElement.ts",
     "./src/Animation/Schema/IAnimationEffect.ts",
-    "./src/Animation/Schema/IAnimationTimeline.ts",
     "./src/Components/AnimationComponent.ts",
     "./src/Components/AnimationImporterComponent.ts",
     "./src/index.ts",

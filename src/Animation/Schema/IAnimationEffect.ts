@@ -1,6 +1,5 @@
 import {EffectName} from "./IAnimationEffectName"
 interface IAnimationEffect {
-    type?: EffectName;
-    [options: string]: any;
+  type?: EffectName;
 }
 export default IAnimationEffect;
