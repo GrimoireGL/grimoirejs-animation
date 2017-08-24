@@ -5,7 +5,7 @@ import AnimationFactory from "../Animation/AnimationFactory";
 import Animation from "../Animation/Animation";
 import Component from "grimoirejs/ref/Node/Component";
 import IAttributeDeclaration from "grimoirejs/ref/Node/IAttributeDeclaration";
-import IAnimationMoment from "../Animation/Schema/IAnimationMoment";
+import IAnimationTimeline from "../Animation/Schema/IAnimationTimeline";
 import AnimationClip from "../Animation/AnimationClip"
 export default class AnimationComponent extends Component {
   public static attributes: { [key: string]: IAttributeDeclaration } = {

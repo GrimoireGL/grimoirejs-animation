@@ -1,5 +1,5 @@
-import IAnimationMoment from "./IAnimationMoment";
+import IAnimationTimeline from "./IAnimationTimeline";
 interface IAnimationRecipe{
-  [clipName:string]: IAnimationMoment[];
+  [clipName:string]: IAnimationTimeline[];
 }
 export default IAnimationRecipe;

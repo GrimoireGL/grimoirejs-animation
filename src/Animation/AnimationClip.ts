@@ -1,29 +1,29 @@
 import GomlNode from "grimoirejs/ref/Node/GomlNode";
 import Component from "grimoirejs/ref/Node/Component";
 import TimelineCalculator from "../Util/TimelineCalculator";
-import IAnimationMoment from "../Animation/Schema/IAnimationMoment"
+import IAnimationTimeline from "../Animation/Schema/IAnimationTimeline"
 export default class AnimationClip {
-  private _moments: { [key: string]: IAnimationMoment } = {};
-  constructor(moments: IAnimationMoment[]) {
-    for (let key in moments) {
-      this.moments[key] = moments[key];
+  private _timeline: { [key: string]: IAnimationTimeline } = {};
+  constructor(timeline: IAnimationTimeline[]) {
+    for (let key in timeline) {
+      this.timeline[key] = timeline[key];
     }
   }
-  get moments() {
-    return this._moments;
+  get timeline() {
+    return this._timeline;
   }
   get length() {
     let len = 0;
-    for (let key in this.moments) {
-      const t = this.moments[key].timeline[this.moments[key].timeline.length - 1];
+    for (let key in this.timeline) {
+      const t = this.timeline[key].timeline[this.timeline[key].timeline.length - 1];
       len = t > len ? t : len;
     }
     return len;
   }
   public step(rootNode: GomlNode, time: number): void {
-    for (let key in this.moments) {
+    for (let key in this.timeline) {
       // TODO cache!!!!!
-      const e = this.moments[key];
+      const e = this.timeline[key];
       const component = rootNode.getComponent<Component>(e.component);
       const attribute = component.getAttributeRaw(e.attribute);
       if (e.query === '@') {
