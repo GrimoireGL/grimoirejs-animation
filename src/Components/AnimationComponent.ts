@@ -6,7 +6,7 @@ import Animation from "../Animation/Animation";
 import Component from "grimoirejs/ref/Node/Component";
 import IAttributeDeclaration from "grimoirejs/ref/Node/IAttributeDeclaration";
 import TimeComponent from "grimoirejs-fundamental/ref/Components/TimeComponent";
-import IAnimationClipElement from "../Animation/Schema/IAnimationClipElement";
+import IAnimationMoment from "../Animation/Schema/IAnimationMoment";
 import AnimationClip from "../Animation/AnimationClip"
 export default class AnimationComponent extends Component {
   public static attributes: { [key: string]: IAttributeDeclaration } = {
@@ -55,7 +55,7 @@ export default class AnimationComponent extends Component {
   }
   private _update(timer: Timer): void {
     for (let key in this.clips) {
-      const length = this._animation.getClip(this.clips[key]).Length;
+      const length = this._animation.getClip(this.clips[key]).length;
       const t = this.loop ? timer.time % length : Math.max(timer.time, length);
       if (t > length) return;
       this._animation.getClip(this.clips[key]).step(this.node, t);
