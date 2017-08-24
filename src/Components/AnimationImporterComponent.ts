@@ -25,10 +25,7 @@ export default class AnimationImporterComponent extends Component {
         });
         if (!this.typeName || !this.src) {
             throw new Error("type or src cannot be null in Animation importer");
-        } else if (AnimationFactory.animationTypes.indexOf(this.typeName) >= 0) {
-            throw new Error(`A Animation type '${this.typeName}' is already loaded.`);
-        } else {
-            AnimationFactory.animationTypes.push(this.typeName)
+        }else{
             AnimationFactory.addAnimationFromURL(this.typeName, this.src);
         }
     }

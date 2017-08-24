@@ -5,7 +5,6 @@ import AnimationFactory from "../Animation/AnimationFactory";
 import Animation from "../Animation/Animation";
 import Component from "grimoirejs/ref/Node/Component";
 import IAttributeDeclaration from "grimoirejs/ref/Node/IAttributeDeclaration";
-import TimeComponent from "grimoirejs-fundamental/ref/Components/TimeComponent";
 import IAnimationMoment from "../Animation/Schema/IAnimationMoment";
 import AnimationClip from "../Animation/AnimationClip"
 export default class AnimationComponent extends Component {
