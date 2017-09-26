@@ -24,13 +24,16 @@ export default class AnimationClip {
     for (let key in this.timeline) {
       // TODO cache!!!!!
       const e = this.timeline[key];
-      const component = rootNode.getComponent<Component>(e.component);
-      const attribute = component.getAttributeRaw(e.attribute);
       if (e.query === '@') {
+        const component = rootNode.getComponent<Component>(e.component);
+        const attribute = component.getAttributeRaw(e.attribute);
         component.setAttribute(e.attribute, TimelineCalculator.calc(time, e, attribute));
       } else {
         rootNode.element.querySelectorAll(e.query).forEach(childElement => {
-          (GomlNode.fromElement(childElement).getComponent(e.component) as Component).setAttribute(e.attribute, TimelineCalculator.calc(time, e, attribute));
+          const node = GomlNode.fromElement(childElement);
+          const component = node.getComponent<Component>(e.component);
+          const attribute = component.getAttributeRaw(e.attribute);
+          (node.getComponent(e.component) as Component).setAttribute(e.attribute, TimelineCalculator.calc(time, e, attribute));
         });
       }
     }
