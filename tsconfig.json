@@ -16,7 +16,7 @@
     "./src/Animation/AnimationFactory.ts",
     "./src/Animation/AnimationParser.ts",
     "./src/Animation/Schema/IAnimationRecipe.ts",
-    "./src/Animation/Schema/IAnimationClipElement.ts",
+    "./src/Animation/Schema/IAnimationTimeline.ts",
     "./src/Animation/Schema/IAnimationEffect.ts",
     "./src/Components/AnimationComponent.ts",
     "./src/Components/AnimationImporterComponent.ts",

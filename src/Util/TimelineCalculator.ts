@@ -1,7 +1,7 @@
 import IAnimationEffect from "../Animation/Schema/IAnimationEffect";
 import {EffectName} from "../Animation/Schema/IAnimationEffectName";
 import NSIdentity from "grimoirejs/ref/Base/NSIdentity";
-import IAnimationClipElement from "../Animation/Schema/IAnimationClipElement";
+import IAnimationTimeline from "../Animation/Schema/IAnimationTimeline";
 import Attribute from "grimoirejs/ref/Node/Attribute";
 import Vector4 from "grimoirejs-math/ref/Vector4";
 import Vector3 from "grimoirejs-math/ref/Vector3";
@@ -11,7 +11,7 @@ import Color4 from "grimoirejs-math/ref/Color4";
 import Quaternion from "grimoirejs-math/ref/Quaternion";
 
 export default class TimelineCalculator {
-  public static calc(time: number, element: IAnimationClipElement, attribute: Attribute): any {
+  public static calc(time: number, element: IAnimationTimeline, attribute: Attribute): any {
     const timelinePosition = this._decideTimelinePosition(time, element.timeline);
     if (element.values.length - 1 === timelinePosition) {
       return element.values[timelinePosition];

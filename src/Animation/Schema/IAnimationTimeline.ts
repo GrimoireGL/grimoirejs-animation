@@ -1,5 +1,5 @@
 import IAnimationEffect from  "./IAnimationEffect";
-interface IAnimationClipElement {
+interface IAnimationTimeline {
   query: string;
   component: string;
   attribute: string;
@@ -8,4 +8,4 @@ interface IAnimationClipElement {
   effects?: IAnimationEffect[];
   defaultEffect?: IAnimationEffect;
 }
-export default IAnimationClipElement;
+export default IAnimationTimeline;

@@ -1,34 +1,39 @@
 import GomlNode from "grimoirejs/ref/Node/GomlNode";
 import Component from "grimoirejs/ref/Node/Component";
 import TimelineCalculator from "../Util/TimelineCalculator";
-import IAnimationClipElement from "../Animation/Schema/IAnimationClipElement"
+import IAnimationTimeline from "../Animation/Schema/IAnimationTimeline"
 export default class AnimationClip {
-  private elements: { [key: string]: IAnimationClipElement } = {};
-  constructor(_element: IAnimationClipElement[]) {
-    for (let key in _element) {
-      this.elements[key] = _element[key];
+  private _timeline: { [key: string]: IAnimationTimeline } = {};
+  constructor(timeline: IAnimationTimeline[]) {
+    for (let key in timeline) {
+      this.timeline[key] = timeline[key];
     }
   }
-  get Elements() {
-    return this.elements;
+  get timeline() {
+    return this._timeline;
   }
-  get Length() {
+  get length() {
     let len = 0;
-    for (let key in this.elements) {
-      const t = this.elements[key].timeline[this.elements[key].timeline.length - 1];
+    for (let key in this.timeline) {
+      const t = this.timeline[key].timeline[this.timeline[key].timeline.length - 1];
       len = t > len ? t : len;
     }
     return len;
   }
   public step(rootNode: GomlNode, time: number): void {
-    for (let key in this.elements) {
-      const e = this.elements[key];
-      const attribute = (rootNode.getComponent(e.component) as Component).getAttributeRaw(e.attribute);
+    for (let key in this.timeline) {
+      // TODO cache!!!!!
+      const e = this.timeline[key];
       if (e.query === '@') {
-        (rootNode.getComponent(e.component) as Component).setAttribute(e.attribute, TimelineCalculator.calc(time, e, attribute));
+        const component = rootNode.getComponent<Component>(e.component);
+        const attribute = component.getAttributeRaw(e.attribute);
+        component.setAttribute(e.attribute, TimelineCalculator.calc(time, e, attribute));
       } else {
         rootNode.element.querySelectorAll(e.query).forEach(childElement => {
-          (GomlNode.fromElement(childElement).getComponent(e.component) as Component).setAttribute(e.attribute, TimelineCalculator.calc(time, e, attribute));
+          const node = GomlNode.fromElement(childElement);
+          const component = node.getComponent<Component>(e.component);
+          const attribute = component.getAttributeRaw(e.attribute);
+          (node.getComponent(e.component) as Component).setAttribute(e.attribute, TimelineCalculator.calc(time, e, attribute));
         });
       }
     }
