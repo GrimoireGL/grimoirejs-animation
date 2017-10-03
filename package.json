@@ -35,12 +35,12 @@
     "grimoirejs-math": "^1.14.7",
     "raw-loader": "^0.5.1",
     "regenerator-runtime": "^0.11.0",
+    "semantic-release": "^7.0.2",
     "ts-loader": "^2.3.3",
     "typescript": "^2.4.2",
     "webpack": "^3.5.5",
     "webpack-shell-plugin": "^0.5.0",
-    "yargs": "^8.0.2",
-    "semantic-release": "^7.0.2"
+    "yargs": "^8.0.2"
   },
   "author": "GrimoireGL",
   "license": "MIT",

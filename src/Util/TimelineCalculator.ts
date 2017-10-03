@@ -38,8 +38,10 @@ export default class TimelineCalculator {
           case "Color4":
             const v4 = Vector4.lerp(v1.toVector(), v2.toVector(), t);
             return new Color4(v4.X, v4.Y, v4.Z, v4.W);
+          case "NumberArray":
+            return v1.map((v,i)=>(v2[i] - v) * t + v);
           default:
-            throw new Error('Converter ' + attribute.converter.name + ' is not supported.');
+            throw new Error('Converter ' + attribute.converter.name + ' is not supported with LINEAR.');
         }
       } else if (element.defaultEffect === EffectName.DESCRETE) {
         return element.values[timelinePosition];
