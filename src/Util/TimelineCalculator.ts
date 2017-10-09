@@ -1,5 +1,5 @@
 import IAnimationEffect from "../Animation/Schema/IAnimationEffect";
-import {EffectName} from "../Animation/Schema/IAnimationEffectName";
+import { EffectName } from "../Animation/Schema/IAnimationEffectName";
 import NSIdentity from "grimoirejs/ref/Base/NSIdentity";
 import IAnimationTimeline from "../Animation/Schema/IAnimationTimeline";
 import Attribute from "grimoirejs/ref/Node/Attribute";
@@ -16,34 +16,34 @@ export default class TimelineCalculator {
     if (element.values.length - 1 === timelinePosition) {
       return element.values[timelinePosition];
     }
-    if (element.defaultEffect !== void 0) {
-      const t = Math.max(0, Math.min(1, (time - element.timeline[timelinePosition]) / (element.timeline[timelinePosition + 1] - element.timeline[timelinePosition])));
-      const v1 = attribute.converter.convert(element.values[timelinePosition], attribute);
-      const v2 = attribute.converter.convert(element.values[timelinePosition + 1], attribute);
-      if (element.defaultEffect === EffectName.LINEAR) {
-        switch ((attribute.converter.name as NSIdentity).name) {
-          case "Number" || "Angle2D":
-            return v1 + (v2 - v1) * t;
-          case "Vector2":
-            return Vector2.lerp(v1, v2, t);
-          case "Vector3":
-            return Vector3.lerp(v1, v2, t);
-          case "Vector4":
-            return Vector4.lerp(v1, v2, t);
-          case "Rotation3":
-            return Quaternion.slerp(v1, v2, t);
-          case "Color3":
-            const v3 = Vector3.lerp(v1.toVector(), v2.toVector(), t);
-            return new Color3(v3.X, v3.Y, v3.Z);
-          case "Color4":
-            const v4 = Vector4.lerp(v1.toVector(), v2.toVector(), t);
-            return new Color4(v4.X, v4.Y, v4.Z, v4.W);
-          default:
-            throw new Error('Converter ' + attribute.converter.name + ' is not supported.');
-        }
-      } else if (element.defaultEffect === EffectName.DESCRETE) {
-        return element.values[timelinePosition];
+    const t = Math.max(0, Math.min(1, (time - element.timeline[timelinePosition]) / (element.timeline[timelinePosition + 1] - element.timeline[timelinePosition])));
+    const v1 = attribute.converter.convert(element.values[timelinePosition], attribute);
+    const v2 = attribute.converter.convert(element.values[timelinePosition + 1], attribute);
+    if (element.defaultEffect === EffectName.LINEAR || element.defaultEffect === void 0) {
+      switch ((attribute.converter.name as NSIdentity).name) {
+        case "Number" || "Angle2D":
+          return v1 + (v2 - v1) * t;
+        case "Vector2":
+          return Vector2.lerp(v1, v2, t);
+        case "Vector3":
+          return Vector3.lerp(v1, v2, t);
+        case "Vector4":
+          return Vector4.lerp(v1, v2, t);
+        case "Rotation3":
+          return Quaternion.slerp(v1, v2, t);
+        case "Color3":
+          const v3 = Vector3.lerp(v1.toVector(), v2.toVector(), t);
+          return new Color3(v3.X, v3.Y, v3.Z);
+        case "Color4":
+          const v4 = Vector4.lerp(v1.toVector(), v2.toVector(), t);
+          return new Color4(v4.X, v4.Y, v4.Z, v4.W);
+        case "NumberArray":
+          return v1.map((v, i) => (v2[i] - v) * t + v);
+        default:
+          throw new Error('Converter ' + attribute.converter.name + ' is not supported with LINEAR.');
       }
+    } else if (element.defaultEffect === EffectName.DESCRETE) {
+      return element.values[timelinePosition];
     }
   }
   private static _decideTimelinePosition(time: number, timeline: number[]): number {
