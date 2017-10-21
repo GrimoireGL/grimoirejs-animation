@@ -24,17 +24,21 @@ export default class AnimationComponent extends Component {
     loop: {
       converter: "Boolean",
       default: true
-    }
+    },
   };
   public animation: string;
   public clips: string[];
   public auto: boolean;
   public loop: boolean;
   private _animation: Animation;
+  private _animationTime: number;
   private _animationPromise: Promise<Animation>;
   private _ready: boolean;
   get Animation() {
     return this._animation;
+  }
+  get AnimationTime() {
+    return this._animationTime;
   }
   public $mount(): void {
     this.__bindAttributes();
@@ -48,6 +52,9 @@ export default class AnimationComponent extends Component {
   public $update(args: IRenderArgument) {
     if (this._ready && this.auto) this._update((args.timer as Timer));
   }
+  public $render(args: IRenderArgument) {
+    if (this._ready && this.auto) this._update((args.timer as Timer));
+  }
   private async _registerAttributes(): Promise<void> {
     this._animation = await this._animationPromise;
     this._ready = true;
@@ -55,9 +62,8 @@ export default class AnimationComponent extends Component {
   private _update(timer: Timer): void {
     for (let key in this.clips) {
       const length = this._animation.getClip(this.clips[key]).length;
-      const t = this.loop ? timer.time % length : Math.max(timer.time, length);
-      if (t > length) return;
-      this._animation.getClip(this.clips[key]).step(this.node, t);
+      this._animationTime = this.loop ? timer.time % length : Math.max(timer.time, length);
+      this._animation.getClip(this.clips[key]).step(this.node, this._animationTime);
     }
   }
   public getClip(clipName: string): AnimationClip {
