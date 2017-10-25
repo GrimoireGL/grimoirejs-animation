@@ -25,11 +25,16 @@ export default class AnimationComponent extends Component {
       converter: "Boolean",
       default: true
     },
+    initialTime:{
+      converter:"Number",
+      default:0
+    }
   };
   public animation: string;
   public clips: string[];
   public auto: boolean;
   public loop: boolean;
+  public initialTime: number;
   private _animation: Animation;
   private _animationTime: number;
   private _animationPromise: Promise<Animation>;
@@ -62,7 +67,8 @@ export default class AnimationComponent extends Component {
   private _update(timer: Timer): void {
     for (let key in this.clips) {
       const length = this._animation.getClip(this.clips[key]).length;
-      this._animationTime = this.loop ? timer.time % length : Math.max(timer.time, length);
+      const t = timer.time + this.initialTime;
+      this._animationTime = this.loop ? t % length : Math.max(t, length);
       this._animation.getClip(this.clips[key]).step(this.node, this._animationTime);
     }
   }
