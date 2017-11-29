@@ -17,22 +17,22 @@ export default class AnimationComponent extends Component {
       converter: "StringArray",
       default: null
     },
-    auto: {
-      converter: "Boolean",
-      default: true
+    timeScale: {
+      converter: "Number",
+      default: 1
     },
     loop: {
       converter: "Boolean",
       default: true
     },
-    initialTime:{
-      converter:"Number",
-      default:0
+    initialTime: {
+      converter: "Number",
+      default: 0
     }
   };
   public animation: string;
   public clips: string[];
-  public auto: boolean;
+  public timeScale: number;
   public loop: boolean;
   public initialTime: number;
   private _animation: Animation;
@@ -55,10 +55,10 @@ export default class AnimationComponent extends Component {
     }
   }
   public $update(args: IRenderArgument) {
-    if (this._ready && this.auto) this._update((args.timer as Timer));
+    if (this._ready && this.timeScale !== 0) this._update((args.timer as Timer));
   }
   public $render(args: IRenderArgument) {
-    if (this._ready && this.auto) this._update((args.timer as Timer));
+    if (this._ready && this.timeScale !== 0) this._update((args.timer as Timer));
   }
   private async _registerAttributes(): Promise<void> {
     this._animation = await this._animationPromise;
@@ -67,7 +67,7 @@ export default class AnimationComponent extends Component {
   private _update(timer: Timer): void {
     for (let key in this.clips) {
       const length = this._animation.getClip(this.clips[key]).length;
-      const t = timer.time + this.initialTime;
+      const t = timer.deltaTime * this.timeScale + this.initialTime;
       this._animationTime = this.loop ? t % length : Math.max(t, length);
       this._animation.getClip(this.clips[key]).step(this.node, this._animationTime);
     }
