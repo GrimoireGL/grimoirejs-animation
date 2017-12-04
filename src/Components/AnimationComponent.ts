@@ -25,7 +25,7 @@ export default class AnimationComponent extends Component {
       converter: "Boolean",
       default: true
     },
-    initialTime: {
+    timeOffset: {
       converter: "Number",
       default: 0
     }
@@ -34,7 +34,8 @@ export default class AnimationComponent extends Component {
   public clips: string[];
   public timeScale: number;
   public loop: boolean;
-  public initialTime: number;
+  public timeOffset: number;
+  public currentTime: number = 0;
   private _animation: Animation;
   private _animationTime: number;
   private _animationPromise: Promise<Animation>;
@@ -54,11 +55,12 @@ export default class AnimationComponent extends Component {
       throw new Error("Animation type name must be sppecified and string");
     }
   }
+  // 直すべき
   public $update(args: IRenderArgument) {
-    if (this._ready && this.timeScale !== 0) this._update((args.timer as Timer));
+    if (this._ready) this._update((args.timer as Timer));
   }
   public $render(args: IRenderArgument) {
-    if (this._ready && this.timeScale !== 0) this._update((args.timer as Timer));
+    if (this._ready) this._update((args.timer as Timer));
   }
   private async _registerAttributes(): Promise<void> {
     this._animation = await this._animationPromise;
@@ -67,9 +69,13 @@ export default class AnimationComponent extends Component {
   private _update(timer: Timer): void {
     for (let key in this.clips) {
       const length = this._animation.getClip(this.clips[key]).length;
-      const t = timer.deltaTime * this.timeScale + this.initialTime;
-      this._animationTime = this.loop ? t % length : Math.max(t, length);
-      this._animation.getClip(this.clips[key]).step(this.node, this._animationTime);
+      this.currentTime += timer.deltaTime * this.timeScale;
+      const t = this.currentTime + this.timeOffset;
+      const animationTime = this.loop ? t % length : Math.max(t, length);
+      if (animationTime !== this._animationTime) {
+        this._animationTime = animationTime;
+        this._animation.getClip(this.clips[key]).step(this.node, this._animationTime);
+      }
     }
   }
   public getClip(clipName: string): AnimationClip {
