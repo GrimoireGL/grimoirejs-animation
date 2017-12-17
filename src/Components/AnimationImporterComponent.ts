@@ -1,7 +1,7 @@
 import gr from "grimoirejs";
 import AnimationFactory from "../Animation/AnimationFactory";
-import Component from "grimoirejs/ref/Node/Component";
-import IAttributeDeclaration from "grimoirejs/ref/Node/IAttributeDeclaration";
+import Component from "grimoirejs/ref/Core/Component";
+import IAttributeDeclaration from "grimoirejs/ref/Interface/IAttributeDeclaration";
 export default class AnimationImporterComponent extends Component {
     public static attributes: { [key: string]: IAttributeDeclaration } = {
         typeName: {
@@ -25,7 +25,7 @@ export default class AnimationImporterComponent extends Component {
         });
         if (!this.typeName || !this.src) {
             throw new Error("type or src cannot be null in Animation importer");
-        }else{
+        } else {
             AnimationFactory.addAnimationFromURL(this.typeName, this.src);
         }
     }

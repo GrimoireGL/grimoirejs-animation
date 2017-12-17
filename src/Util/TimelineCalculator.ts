@@ -1,8 +1,8 @@
 import IAnimationEffect from "../Animation/Schema/IAnimationEffect";
 import { EffectName } from "../Animation/Schema/IAnimationEffectName";
-import NSIdentity from "grimoirejs/ref/Base/NSIdentity";
+import Identity from "grimoirejs/ref/Core/Identity";
 import IAnimationTimeline from "../Animation/Schema/IAnimationTimeline";
-import Attribute from "grimoirejs/ref/Node/Attribute";
+import Attribute from "grimoirejs/ref/Core/Attribute";
 import Vector4 from "grimoirejs-math/ref/Vector4";
 import Vector3 from "grimoirejs-math/ref/Vector3";
 import Vector2 from "grimoirejs-math/ref/Vector2";
@@ -20,7 +20,7 @@ export default class TimelineCalculator {
     const v1 = attribute.converter.convert(element.values[timelinePosition], attribute);
     const v2 = attribute.converter.convert(element.values[timelinePosition + 1], attribute);
     if (element.defaultEffect === EffectName.LINEAR || element.defaultEffect === void 0) {
-      switch ((attribute.converter.name as NSIdentity).name) {
+      switch ((attribute.converter.name as Identity).name) {
         case "Number" || "Angle2D":
           return v1 + (v2 - v1) * t;
         case "Vector2":

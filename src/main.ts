@@ -2,12 +2,12 @@ import gr from "grimoirejs";
 import AnimationImporterComponent from "./Components/AnimationImporterComponent";
 import AnimationComponent from "./Components/AnimationComponent";
 import AnimationFactory from "./Animation/AnimationFactory";
-import Constants from "grimoirejs/ref/Base/Constants";
-import NodeInterface from "grimoirejs/ref/Interface/NodeInterface";
-import GomlNode from "grimoirejs/ref/Node/GomlNode";
+import Constants from "grimoirejs/ref/Core/Constants";
+import NodeInterface from "grimoirejs/ref/Core/NodeInterface";
+import GomlNode from "grimoirejs/ref/Core/GomlNode";
 import Animation from "./Animation/Animation";
 import IAnimationRecipe from "./Animation/Schema/IAnimationRecipe";
-import Attribute from "grimoirejs/ref/Node/Attribute"
+import Attribute from "grimoirejs/ref/Core/Attribute"
 
 // function animate(attributeName: string, value: number[], time: number) {
 //   if (this instanceof NodeInterface) {

@@ -3,8 +3,8 @@ import Timer from "grimoirejs-fundamental/ref/Util/Timer";
 import IRenderArgument from "grimoirejs-fundamental/ref/SceneRenderer/IRenderArgument";
 import AnimationFactory from "../Animation/AnimationFactory";
 import Animation from "../Animation/Animation";
-import Component from "grimoirejs/ref/Node/Component";
-import IAttributeDeclaration from "grimoirejs/ref/Node/IAttributeDeclaration";
+import Component from "grimoirejs/ref/Core/Component";
+import IAttributeDeclaration from "grimoirejs/ref/Interface/IAttributeDeclaration";
 import IAnimationTimeline from "../Animation/Schema/IAnimationTimeline";
 import AnimationClip from "../Animation/AnimationClip"
 export default class AnimationComponent extends Component {

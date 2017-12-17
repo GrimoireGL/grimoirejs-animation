@@ -1,5 +1,5 @@
-import GomlNode from "grimoirejs/ref/Node/GomlNode";
-import Component from "grimoirejs/ref/Node/Component";
+import GomlNode from "grimoirejs/ref/Core/GomlNode";
+import Component from "grimoirejs/ref/Core/Component";
 import TimelineCalculator from "../Util/TimelineCalculator";
 import IAnimationTimeline from "../Animation/Schema/IAnimationTimeline"
 export default class AnimationClip {
