@@ -42,8 +42,8 @@ import Attribute from "grimoirejs/ref/Core/Attribute"
 export default () => {
   gr.register(async () => {
     gr.registerNode("import-animation", ["AnimationImporter"]);
-    gr.registerComponent("Animation", AnimationComponent);
-    gr.registerComponent("AnimationImporter", AnimationImporterComponent);
+    gr.registerComponent(AnimationComponent);
+    gr.registerComponent(AnimationImporterComponent);
     // gr.prototype.constructor.Interface.NodeInterface.prototype.animate = animate;
     // (GomlNode.prototype as any).animate = animate;
   });

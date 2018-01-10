@@ -3,6 +3,7 @@ import AnimationFactory from "../Animation/AnimationFactory";
 import Component from "grimoirejs/ref/Core/Component";
 import IAttributeDeclaration from "grimoirejs/ref/Interface/IAttributeDeclaration";
 export default class AnimationImporterComponent extends Component {
+    public static componentName = "AnimationImporter";
     public static attributes: { [key: string]: IAttributeDeclaration } = {
         typeName: {
             default: null,

@@ -8,6 +8,7 @@ import IAttributeDeclaration from "grimoirejs/ref/Interface/IAttributeDeclaratio
 import IAnimationTimeline from "../Animation/Schema/IAnimationTimeline";
 import AnimationClip from "../Animation/AnimationClip"
 export default class AnimationComponent extends Component {
+  public static componentName = "Animation";
   public static attributes: { [key: string]: IAttributeDeclaration } = {
     animation: {
       converter: "String",
