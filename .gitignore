@@ -5,7 +5,8 @@
 .LSOverride
 
 # Icon must end with two \r
-Icon
+Icon
+
 
 # Thumbnails
 ._*
@@ -65,6 +66,7 @@ jspm_packages
 
 src/**/*.js
 src/index.ts
+src/metaInfo.ts
 lib
 ref
 register
