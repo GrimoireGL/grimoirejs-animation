@@ -1,6 +1,6 @@
 {
   "name": "grimoirejs-animation",
-  "version": "2.0.0",
+  "version": "3.0.0beta",
   "description": "The animation plugin of grimoire.js.",
   "main": "./ref/index.js",
   "typings": "./ref/index.d.ts",
