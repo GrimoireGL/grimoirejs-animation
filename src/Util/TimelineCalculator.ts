@@ -2,23 +2,24 @@ import IAnimationEffect from "../Animation/Schema/IAnimationEffect";
 import { EffectName } from "../Animation/Schema/IAnimationEffectName";
 import Identity from "grimoirejs/ref/Core/Identity";
 import IAnimationTimeline from "../Animation/Schema/IAnimationTimeline";
-import Attribute from "grimoirejs/ref/Core/Attribute";
+import Attribute, { StandardAttribute } from "grimoirejs/ref/Core/Attribute";
 import Vector4 from "grimoirejs-math/ref/Vector4";
 import Vector3 from "grimoirejs-math/ref/Vector3";
 import Vector2 from "grimoirejs-math/ref/Vector2";
 import Color3 from "grimoirejs-math/ref/Color3";
 import Color4 from "grimoirejs-math/ref/Color4";
 import Quaternion from "grimoirejs-math/ref/Quaternion";
+import { IStandardConverterDeclaration } from "grimoirejs/ref/Interface/IAttributeConverterDeclaration";
 
 export default class TimelineCalculator {
-  public static calc(time: number, element: IAnimationTimeline, attribute: Attribute): any {
+  public static calc(time: number, element: IAnimationTimeline, attribute: StandardAttribute<any>): any {
     const timelinePosition = this._decideTimelinePosition(time, element.timeline);
     if (element.values.length - 1 === timelinePosition) {
       return element.values[timelinePosition];
     }
     const t = Math.max(0, Math.min(1, (time - element.timeline[timelinePosition]) / (element.timeline[timelinePosition + 1] - element.timeline[timelinePosition])));
-    const v1 = attribute.converter.convert(element.values[timelinePosition], attribute);
-    const v2 = attribute.converter.convert(element.values[timelinePosition + 1], attribute);
+    const v1 = attribute.converter.convert(element.values[timelinePosition], attribute, {});
+    const v2 = attribute.converter.convert(element.values[timelinePosition + 1], attribute, {});
     if (element.defaultEffect === EffectName.LINEAR || element.defaultEffect === void 0) {
       switch ((attribute.converter.name as Identity).name) {
         case "Number" || "Angle2D":
