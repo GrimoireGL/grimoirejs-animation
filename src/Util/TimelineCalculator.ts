@@ -21,7 +21,7 @@ export default class TimelineCalculator {
     const v1 = attribute.converter.convert(element.values[timelinePosition], attribute, {});
     const v2 = attribute.converter.convert(element.values[timelinePosition + 1], attribute, {});
     if (element.defaultEffect === EffectName.LINEAR || element.defaultEffect === void 0) {
-      switch ((attribute.converter.name as Identity).name) {
+      switch (TimelineCalculator._converterNameToShortConverterName(attribute.converter.name)) {
         case "Number" || "Angle2D":
           return v1 + (v2 - v1) * t;
         case "Vector2":
@@ -67,5 +67,13 @@ export default class TimelineCalculator {
       }
     }
     return left;
+  }
+  // TODO: resolve converter name with fqn
+  private static _converterNameToShortConverterName(name: Identity | string): string {
+    if (typeof name === "string") {
+      return name;
+    } else {
+      return name.name;
+    }
   }
 }
