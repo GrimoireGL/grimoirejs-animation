@@ -7,35 +7,44 @@ import Component from "grimoirejs/ref/Core/Component";
 import { IAttributeDeclaration } from "grimoirejs/ref/Interface/IAttributeDeclaration";
 import IAnimationTimeline from "../Animation/Schema/IAnimationTimeline";
 import AnimationClip from "../Animation/AnimationClip"
+import { attribute } from "grimoirejs/ref/Core/Decorator";
+/** 
+ * Animation component provide abstracted animation feature.
+ * This component will change parameters of components by following animation file.
+*/
 export default class AnimationComponent extends Component {
   public static componentName = "Animation";
-  public static attributes: { [key: string]: IAttributeDeclaration } = {
-    animation: {
-      converter: "String",
-      default: null
-    },
-    clips: {
-      converter: "StringArray",
-      default: null
-    },
-    timeScale: {
-      converter: "Number",
-      default: 1
-    },
-    loop: {
-      converter: "Boolean",
-      default: true
-    },
-    timeOffset: {
-      converter: "Number",
-      default: 0
-    }
-  };
+
+  /**
+   * Animation name
+   */
+  @attribute("String", null)
   public animation: string;
+
+  /**
+   * Clip to play
+   */
+  @attribute("StringArray", null)
   public clips: string[];
+
+  /**
+   * Time scale. If this value is 1, play as default.
+   */
+  @attribute("Number", 1)
   public timeScale: number;
+
+  /**
+   * Should loop or not.
+   */
+  @attribute("Boolean", true)
   public loop: boolean;
+
+  /**
+   * Time offset of animation
+   */
+  @attribute("Number", 0)
   public timeOffset: number;
+
   public currentTime: number = 0;
   private _animation: Animation;
   private _animationTime: number;
@@ -48,7 +57,6 @@ export default class AnimationComponent extends Component {
     return this._animationTime;
   }
   public $mount(): void {
-    this.__bindAttributes();
     if (this.animation && typeof this.animation === "string") {
       this._animationPromise = AnimationFactory.instanciate(this.animation);
       this._registerAttributes();
