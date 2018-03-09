@@ -1,7 +1,8 @@
-import GomlNode from "grimoirejs/ref/Node/GomlNode";
-import Component from "grimoirejs/ref/Node/Component";
+import GomlNode from "grimoirejs/ref/Core/GomlNode";
+import Component from "grimoirejs/ref/Core/Component";
 import TimelineCalculator from "../Util/TimelineCalculator";
 import IAnimationTimeline from "../Animation/Schema/IAnimationTimeline"
+import { StandardAttribute } from "grimoirejs/ref/Core/Attribute";
 export default class AnimationClip {
   private _timeline: { [key: string]: IAnimationTimeline } = {};
   constructor(timeline: IAnimationTimeline[]) {
@@ -27,13 +28,13 @@ export default class AnimationClip {
       if (e.query === '@') {
         const component = rootNode.getComponent<Component>(e.component);
         const attribute = component.getAttributeRaw(e.attribute);
-        component.setAttribute(e.attribute, TimelineCalculator.calc(time, e, attribute));
+        component.setAttribute(e.attribute, TimelineCalculator.calc(time, e, attribute as StandardAttribute));
       } else {
         rootNode.element.querySelectorAll(e.query).forEach(childElement => {
           const node = GomlNode.fromElement(childElement);
           const component = node.getComponent<Component>(e.component);
           const attribute = component.getAttributeRaw(e.attribute);
-          (node.getComponent(e.component) as Component).setAttribute(e.attribute, TimelineCalculator.calc(time, e, attribute));
+          (node.getComponent(e.component) as Component).setAttribute(e.attribute, TimelineCalculator.calc(time, e, attribute as StandardAttribute));
         });
       }
     }
