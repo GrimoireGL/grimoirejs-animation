@@ -77,10 +77,16 @@ workflows:
   workflow:
     jobs:
       - build:
+          filters:
+            branches:
+              only: /.*/
       - common_e2e:
           requires:
             - build
             - test
+          filters:
+            branches:
+              only: /.*/
       - npm_release:
           requires:
             - build
