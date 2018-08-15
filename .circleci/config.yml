@@ -83,14 +83,12 @@ workflows:
       - common_e2e:
           requires:
             - build
-            - test
           filters:
             branches:
               only: /.*/
       - npm_release:
           requires:
             - build
-            - test
           filters:
             branches:
               only: master
